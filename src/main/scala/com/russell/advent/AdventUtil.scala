@@ -12,9 +12,27 @@ object AdventUtil {
     def right(): Position = copy(x = x + 1)
     def adjacent(): Seq[Position]  = Seq(up, down, left, right)
     def diagonals(): Seq[Position] = Seq(up.right, up.left, down.left, down.right)
+
   }
   object Position {
     val Origin = Position(0, 0)
+
+    /**
+     * All the points that lie on a straight line between this point
+     * and that point inclusive
+     */
+    def between(start: Position, end: Position): Seq[Position] = {
+      val dx = end.x - start.x
+      val dy = end.y - start.y
+      assert(dx * dy == 0 && (dx != 0 || dy != 0), s"No straight line between points ($start -> $end)")
+      if (dx != 0) {
+        for (shift <- 0 to dx by dx.sign) yield
+          start.copy(x = start.x + shift)
+      } else {
+        for (shift <- 0 to dy by dy.sign) yield
+          start.copy(y = start.y + shift)
+      }
+    }
   }
 
   case class XYArray[T](data: Array[Array[T]]) extends mutable.IndexedSeq[Array[T]] {
