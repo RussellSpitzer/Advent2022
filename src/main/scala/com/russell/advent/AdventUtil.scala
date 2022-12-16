@@ -5,6 +5,25 @@ import scala.reflect.ClassTag
 
 object AdventUtil {
 
+  /** Finds the left most contiguous range in a set of ranges
+   * TODO Have this return sequence of combined ranges instead of just the leftmost one
+   **/
+  def findContiguous(unorderedRanges: Seq[Range.Inclusive]): Seq[Range.Inclusive] = {
+    val ranges = unorderedRanges.sortBy(_.start)
+    ranges.foldLeft(Seq(): Seq[Range.Inclusive]) { (combinedRanges, range: Range.Inclusive) =>
+      if (combinedRanges.isEmpty) {
+        combinedRanges :+ range
+      } else {
+        val lastCombined = combinedRanges.last
+        if (lastCombined.contains(range.start) && lastCombined.end < range.end) {
+          combinedRanges.dropRight(1) :+ (lastCombined.start to range.end)
+        } else {
+          combinedRanges
+        }
+      }
+    }
+  }
+
   case class Position(x: Int, y: Int) {
     def up() = copy(y = y + 1)
     def down(): Position = copy(y = y - 1)
@@ -32,6 +51,12 @@ object AdventUtil {
         for (shift <- 0 to dy by dy.sign) yield
           start.copy(y = start.y + shift)
       }
+    }
+
+    def mDistance(start: Position, end: Position): Int = {
+      val dx = end.x - start.x
+      val dy = end.y - start.y
+      Math.abs(dx) + Math.abs(dy)
     }
   }
 
