@@ -24,6 +24,23 @@ object AdventUtil {
     }
   }
 
+  case class Node[T](name: String, value: T, children: Seq[Node[T]]) {
+    def findDepthFirst(fun: (Node[T]) => Boolean) : Option[Node[T]] = {
+      if (fun(this)) {
+        Some(this)
+      } else {
+        children.collectFirst{case child if child.findDepthFirst(fun).isDefined => child}
+      }
+    }
+
+    def toMap(): Map[String, Node[T]] = {
+      val mapBuilder = Map.newBuilder[String, Node[T]]
+      mapBuilder.addOne(name, this)
+      mapBuilder.addAll(children.map(_.toMap()).reduce(_ ++ _))
+      mapBuilder.result()
+    }
+  }
+
   case class Position(x: Int, y: Int) {
     def up() = copy(y = y + 1)
     def down(): Position = copy(y = y - 1)
