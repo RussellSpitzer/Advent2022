@@ -71,35 +71,25 @@ class TestDay16 extends AnyFlatSpec with should.Matchers {
     path.map(_.score).sum should be (1707)
   }
 
-  /**
-   * Warning Slow - Probably a smarter solution that this out there
-   */
   it should "work with the input data" in {
     val valveMap = parseInput("day16.txt")
     val firstChoiceMap = bestPath(valveMap, timeLeft = 26)
 
     val totalAmount = firstChoiceMap.size
     var i = 0
-    var lastBest = firstChoiceMap.maxBy(_.map(_.score).sum)
-    var lastBestScore = lastBest.map(_.score).sum
-
-    firstChoiceMap.foreach { myPath =>
+    val bestCombo = firstChoiceMap.map { myPath =>
       val visited = myPath.map(_.name).toSet
-      for (newPath <- bestPath(valveMap, visited = visited, timeLeft = 26)) {
-        val newScore = newPath.map(_.score).sum
-        if (newScore > lastBestScore) {
-          lastBest = newPath
-          lastBestScore = newScore
-        }
-      }
+      val afterSecondRun = bestPath(valveMap, visited = visited, timeLeft = 26)
       i += 1
       if (i % (totalAmount / 1000) == 0) {
-        println(s"$i / $totalAmount")
+        println (s"$i / $totalAmount")
       }
-    }
+      afterSecondRun.sortBy(_.map(_.score).sum).last
+    }.sortBy(_.map(_.score).sum).last
 
-    val path = lastBest
-    println(s"$path : ${path.map(_.score).sum}")
-    path.map(_.score).sum should be(2675)
+    println(s"$bestCombo : ${bestCombo.map(_.score).sum}")
+    bestCombo.map(_.score).sum should be(1707)
   }
+
+
 }
