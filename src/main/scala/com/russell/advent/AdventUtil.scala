@@ -49,6 +49,10 @@ object AdventUtil {
     def adjacent(): Seq[Position]  = Seq(up, down, left, right)
     def diagonals(): Seq[Position] = Seq(up.right, up.left, down.left, down.right)
 
+    def +(that: Position) = {
+      Position(x + that.x, y + that.y)
+    }
+
   }
   object Position {
     val Origin = Position(0, 0)
@@ -86,7 +90,7 @@ object AdventUtil {
     }
 
     def apply(position: Position): T = {
-      data(position.y)(position.x)
+      data(position.y.toInt)(position.x.toInt)
     }
 
     def apply(i: Int): Array[T] = {
@@ -94,7 +98,7 @@ object AdventUtil {
     }
 
     def update(position: Position, value: Any): Unit = {
-      data(position.y)(position.x) = value.asInstanceOf[T]
+      data(position.y.toInt)(position.x.toInt) = value.asInstanceOf[T]
     }
 
     override def length: Int = dimy
