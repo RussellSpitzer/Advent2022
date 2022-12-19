@@ -5,24 +5,6 @@ import scala.reflect.ClassTag
 
 object AdventUtil {
 
-  /** Finds the left most contiguous range in a set of ranges
-   **/
-  def findContiguous(unorderedRanges: Seq[Range.Inclusive]): Seq[Range.Inclusive] = {
-    val ranges = unorderedRanges.sortBy(_.start)
-    ranges.foldLeft(Seq(): Seq[Range.Inclusive]) { (combinedRanges, range: Range.Inclusive) =>
-      if (combinedRanges.isEmpty) {
-        combinedRanges :+ range
-      } else {
-        val lastCombined = combinedRanges.last
-        if (lastCombined.contains(range.start) && lastCombined.end < range.end) {
-          combinedRanges.dropRight(1) :+ (lastCombined.start to range.end)
-        } else {
-          combinedRanges
-        }
-      }
-    }
-  }
-
   case class Node[T](name: String, value: T, children: Seq[Node[T]]) {
     def findDepthFirst(fun: (Node[T]) => Boolean) : Option[Node[T]] = {
       if (fun(this)) {
@@ -115,54 +97,4 @@ object AdventUtil {
       XYArray[T](seqs.map(_.toArray).toArray)
     }
   }
-
-  case class Voxel(x: Int, y: Int, z: Int) {
-    def neighborVoxels = Seq(
-      this.copy(x = x + 1),
-      this.copy(x = x - 1),
-      this.copy(y = y + 1),
-      this.copy(y = y - 1),
-      this.copy(z = z + 1),
-      this.copy(z = z - 1))
-
-    def surfaceArea(voxels: Set[Voxel]): Int = {
-      val others = (voxels - this)
-      val surfaceArea = neighborVoxels.filter(!others.contains(_)).size
-      surfaceArea
-    }
-  }
-
-  object Voxel {
-    def surfaceArea(voxels: Set[Voxel]): Int = {
-      val voxelSeq = voxels.toSeq
-      val surfaces = voxelSeq.map(_.surfaceArea(voxels))
-      surfaces.sum
-    }
-
-    def externalSurfaceArea(input: Set[Voxel]): Int = {
-      var voxels = input
-      val (min, max) = Voxel.bounds(voxels)
-      Voxel.voxelsInBounds(min, max).foreach { checkVoxel =>
-        val visitedVoxels: mutable.Set[Voxel] = mutable.Set()
-        if (fillVoid(checkVoxel, voxels, visitedVoxels, min, max)) {
-          voxels = voxels ++ visitedVoxels
-        }
-      }
-      surfaceArea(voxels)
-    }
-
-    def bounds(voxels: Set[Voxel]): (Voxel, Voxel) = {
-      val max = Voxel(voxels.maxBy(_.x).x, voxels.maxBy(_.y).y, voxels.maxBy(_.z).z)
-      val min = Voxel(voxels.minBy(_.x).x, voxels.minBy(_.y).y, voxels.minBy(_.z).z)
-      (min, max)
-    }
-
-    def voxelsInBounds(min: Voxel, max: Voxel): Iterable[Voxel] = {
-      for {x <- min.x to max.x
-           y <- min.y to max.y
-           z <- min.z to max.z} yield
-        Voxel(x, y, z)
-    }
-  }
-
 }

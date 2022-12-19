@@ -1,6 +1,5 @@
 package com.russell.advent.day16
 
-import com.russell.advent.AdventUtil.Position
 import com.russell.advent.day16.Day16._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
@@ -71,7 +70,10 @@ class TestDay16 extends AnyFlatSpec with should.Matchers {
     path.map(_.score).sum should be (1707)
   }
 
-  it should "work with the input data" in {
+  /**
+   *  Takes like 30+ minutes
+   *  **/
+  ignore should "work with the input data" in {
     val valveMap = parseInput("day16.txt")
     val firstChoiceMap = bestPath(valveMap, timeLeft = 26)
 
@@ -88,7 +90,7 @@ class TestDay16 extends AnyFlatSpec with should.Matchers {
     }.sortBy(_.map(_.score).sum).last
 
     println(s"$bestCombo : ${bestCombo.map(_.score).sum}")
-    bestCombo.map(_.score).sum should be(1707)
+    bestCombo.map(_.score).sum should be(2675)
   }
 
 

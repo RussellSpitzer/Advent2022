@@ -1,7 +1,7 @@
 package com.russell.advent.day18
 
-import com.russell.advent.AdventUtil.Voxel
 import com.russell.advent.day18.Day18._
+import com.russell.advent.util.Voxels.Voxel
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 

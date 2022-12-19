@@ -39,7 +39,7 @@ class TestDay13 extends AnyFlatSpec with should.Matchers {
 
   "ParseInput" should "work on the example" in {
     val example = parseInput(Example)
-    example.size should be(23)
+    example.size should be(16)
   }
 
   "Ordered" should "work on the example" in {

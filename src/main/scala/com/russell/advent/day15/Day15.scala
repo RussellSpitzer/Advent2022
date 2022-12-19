@@ -1,7 +1,8 @@
 package com.russell.advent.day15
 
-import com.russell.advent.AdventUtil.{Position, findContiguous}
+import com.russell.advent.AdventUtil.Position
 import com.russell.advent.AdventUtil.Position.{between, mDistance}
+import com.russell.advent.util.Ranges.findContiguous
 
 import scala.collection.mutable
 import scala.io.Source
