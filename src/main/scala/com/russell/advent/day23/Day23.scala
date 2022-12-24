@@ -22,13 +22,13 @@ object Day23 {
     val proposedMoves = Map.newBuilder[Position, Position]
     for (elf <- elves) {
 
-      val NW = elf.down().left()
-      val N = elf.down()
-      val NE = elf.down().right()
+      val NW = elf.up().left()
+      val N = elf.up()
+      val NE = elf.up().right()
       val E =  elf.right()
-      val SE = elf.up().right()
-      val S = elf.up()
-      val SW = elf.up().left()
+      val SE = elf.down().right()
+      val S = elf.down()
+      val SW = elf.down().left()
       val W = elf.left()
 
       // println(debugString(elf, elves))

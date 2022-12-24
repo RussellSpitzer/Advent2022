@@ -5,6 +5,11 @@ import scala.reflect.ClassTag
 
 object AdventUtil {
 
+  object Direction extends Enumeration {
+    type Direction = Value
+    val N, NE, NW, S, SE, SW, E, W = Value
+  }
+
   case class Node[T](name: String, value: T, children: Seq[Node[T]]) {
     def findDepthFirst(fun: (Node[T]) => Boolean) : Option[Node[T]] = {
       if (fun(this)) {
@@ -23,12 +28,21 @@ object AdventUtil {
   }
 
   case class Position(x: Int, y: Int) {
-    def up() = copy(y = y + 1)
-    def down(): Position = copy(y = y - 1)
-    def left(): Position = copy(x = x - 1)
-    def right(): Position = copy(x = x + 1)
-    def adjacent(): Seq[Position]  = Seq(up, down, left, right)
-    def diagonals(): Seq[Position] = Seq(up.right, up.left, down.left, down.right)
+
+    def N() = copy(y = y - 1)
+    def NE() = copy(x = x + 1, y = y - 1)
+    def NW() = copy(x = x -1, y = y - 1)
+    def S() = copy(y = y + 1)
+    def SE() = copy(x = x + 1, y = y + 1)
+    def SW() = copy(x = x - 1, y = y + 1)
+    def E() = copy(x = x + 1)
+    def W() = copy(x = x - 1)
+    def down() = S
+    def up() = N
+    def left() = W
+    def right() = E
+    def adjacent(): Seq[Position]  = Seq(N, S, E, W)
+    def diagonals(): Seq[Position] = Seq(N, NE, E, SE, S, SW, W, NW)
 
     def +(that: Position) = {
       Position(x + that.x, y + that.y)

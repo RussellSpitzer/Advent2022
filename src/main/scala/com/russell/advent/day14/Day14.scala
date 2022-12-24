@@ -70,19 +70,19 @@ object Day14 {
     def addSand(infiniteBottom: Boolean = false): Boolean = {
       var sandPosition = SandStart
       while (sandPosition.y < bottomDepth + 1) {
-        if (sandLocations.contains(sandPosition.up())) {
-          if (sandLocations.contains(sandPosition.up().left())) {
-            if(sandLocations.contains(sandPosition.up().right())) {
+        if (sandLocations.contains(sandPosition.down())) {
+          if (sandLocations.contains(sandPosition.down().left())) {
+            if(sandLocations.contains(sandPosition.down().right())) {
               sandLocations(sandPosition) = 'o'
               return true
             } else {
-              sandPosition = sandPosition.up().right()
+              sandPosition = sandPosition.down().right()
             }
           } else {
-            sandPosition = sandPosition.up().left()
+            sandPosition = sandPosition.down().left()
           }
         } else {
-          sandPosition = sandPosition.up()
+          sandPosition = sandPosition.down()
         }
       }
       if (infiniteBottom) {
