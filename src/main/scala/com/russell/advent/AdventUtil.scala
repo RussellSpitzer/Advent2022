@@ -1,5 +1,7 @@
 package com.russell.advent
 
+import com.russell.advent.AdventUtil.Direction.{Direction, N}
+
 import scala.collection.mutable
 import scala.reflect.ClassTag
 
@@ -8,6 +10,15 @@ object AdventUtil {
   object Direction extends Enumeration {
     type Direction = Value
     val N, NE, NW, S, SE, SW, E, W = Value
+
+    val Arrow: Map[Char, Direction] = Map(
+      '^' -> N,
+      '>' -> E,
+      '<' -> W,
+      'v' -> S
+    )
+
+    val Char: Map[Direction, Char] = Arrow.map(_.swap)
   }
 
   case class Node[T](name: String, value: T, children: Seq[Node[T]]) {
@@ -28,6 +39,17 @@ object AdventUtil {
   }
 
   case class Position(x: Int, y: Int) {
+
+    def apply(direction: Direction) =  direction match {
+      case Direction.N => N
+      case Direction.NW => NW
+      case Direction.W => W
+      case Direction.SW => SW
+      case Direction.S => S
+      case Direction.SE => SE
+      case Direction.E => E
+      case Direction.NE => NE
+    }
 
     def N() = copy(y = y - 1)
     def NE() = copy(x = x + 1, y = y - 1)
