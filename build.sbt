@@ -13,8 +13,7 @@ lazy val root = (project in file("."))
       "io.circe" %% "circe-core",
       "io.circe" %% "circe-generic",
       "io.circe" %% "circe-parser",
-    ).map(_ % circeVersion),
-    libraryDependencies += "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4"
+    ).map(_ % circeVersion)
 )
 
 
